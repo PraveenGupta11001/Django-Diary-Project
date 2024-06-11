@@ -1,0 +1,82 @@
+Initialize django project
+> django-admin startproject diary .
+-- . stop the prevent Django to create another directory for your diary project.
+
+> python manage.py migrate
+-- Django have multiple supports of databases and for single one connection like only me use SQLite DB by single line of cmd.
+
+-- Create a superuser for your DB
+> python manage.py createsuperuser
+Username (leave blank to use 'root'): admin
+Email address: admin@example.com
+Password: RealPyth0n
+Password (again): RealPyth0n
+Superuser created successfully.
+
+-- Run a Development Server - lightweight Server
+> python manage.py runserver
+-- server can be accessed via - http://127.0.0.1:8000/ or localhost:8000
+
+
+-- Now got http://127.0.0.1:8000/admin for login by user-pg11001 and pass - admin@123Pg
+-- Django admin site is most powerful feature of Django.
+
+-- Need to know that project and app in Django is different because it make codebase clean while one app can be used for multiple projects.
+
+
+-- In this project you need only one app and lets give it name entries because for diary entries
+> python manage.py startapp entries
+
+
+-- So far Django does not know that you have created an app so by making configuration to diary/setting.py you connect it project.
+-- add this line 
+INSTALLED_APPS = [
+    "entries.apps.EntriesConfig", ## this one only need to added
+    'django.contrib.admin',
+    ....
+]
+
+-- then create model for loading to DB 
+here is the data for entries/models.py 
+"""
+# entries/models.py
+from django.db import models
+from django.utils import timezone
+
+class Entry(models.Model):
+    title = models.CharField(max_length=200)
+    content = models.TextField()
+    date_created = models.DateTimeField(default=timezone.now)
+
+    def __str__(self):
+        return self.title
+    
+    class Meta:
+        verbose_name_plural = "Entries"
+"""
+
+-- Now lets register our model but well it won't give error even if you forget to register it
+"""
+# entries/admin.py
+
+from django.contrib import admin
+from .models import Entry
+
+admin.site.register(Entry)
+"""
+
+-- Migrate the Entry Model - after adding to new class and registering the new model to admin site. you need to make migration files for
+Django and run them. With makemigrations, you create the migration files, which contain Django’s instructions for building a database. With migrate, you implement them:
+> python migrate.py makemigrations
+> python migrate.py migrate
+
+-- Now run the Development Server
+
+---- Now we have done backend django but it won't be done in frontend so let's go.
+-- create generic view for ListView and DetailView
+
+
+
+
+
+
